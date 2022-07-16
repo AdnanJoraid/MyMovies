@@ -11,6 +11,7 @@ class FavoriteMoviesVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .black
     }
 
 
