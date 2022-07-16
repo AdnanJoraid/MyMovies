@@ -41,6 +41,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private func createTabBar() -> UITabBarController {
         let tabbar = UITabBarController()
         UITabBar.appearance().tintColor = .systemRed
+        UITabBar.appearance().barTintColor = .systemGray6
         tabbar.viewControllers = [createMoviesNC(), createFavoriteMoviesNC()]
         return tabbar
     }
