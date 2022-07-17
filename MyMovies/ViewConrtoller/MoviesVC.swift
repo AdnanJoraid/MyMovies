@@ -14,6 +14,8 @@ class MoviesVC: UIViewController {
     }
     
     var movies: [Movie] = []
+    var filteredMovies = [Movie]()
+    var isSearching: Bool = false
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Movie>!
     
@@ -23,12 +25,14 @@ class MoviesVC: UIViewController {
         getMovies()
         configureCollectionView()
         configureDataSource()
+        configureSearchController()
     }
     
     private func configureCollectionView() {
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createThreeColumnFlowLayout())
+        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: createTwoColumnFlowLayout())
         view.addSubview(collectionView)
         collectionView.register(MovieCell.self, forCellWithReuseIdentifier: MovieCell.reuseID)
+        collectionView.delegate = self
     }
     
     
@@ -38,14 +42,25 @@ class MoviesVC: UIViewController {
             switch result {
             case .success(let movies):
                 self.movies = movies.items
-                self.updateData()
+                self.updateData(on: self.movies)
             case .failure(let error):
                 print(error)
             }
         }
     }
     
-    private func createThreeColumnFlowLayout() -> UICollectionViewFlowLayout {
+    func configureSearchController() {
+        let searchController = UISearchController()
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        searchController.searchBar.placeholder = "Search for a movie"
+        searchController.obscuresBackgroundDuringPresentation = false
+        navigationItem.searchController = searchController
+        
+        
+    }
+    
+    private func createTwoColumnFlowLayout() -> UICollectionViewFlowLayout {
         let width = view.bounds.width
         let padding: CGFloat = 8
         let minimumItemSpacing: CGFloat = 8
@@ -67,7 +82,7 @@ class MoviesVC: UIViewController {
         })
     }
     
-    func updateData() {
+    func updateData(on movies: [Movie]) {
         var snapshot = NSDiffableDataSourceSnapshot<Section, Movie>()
         snapshot.appendSections([.main])
         snapshot.appendItems(movies)
@@ -76,3 +91,34 @@ class MoviesVC: UIViewController {
 
 }
 
+//MARK: - Extensions
+
+extension MoviesVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let activeArray = isSearching ? filteredMovies : movies
+        let movie = activeArray[indexPath.item]
+        
+        let destVC = MovieDetailsVC()
+        destVC.title = movie.title
+        
+        let navController = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true)
+    }
+}
+
+extension MoviesVC: UISearchResultsUpdating, UISearchBarDelegate {
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+        isSearching = true
+        filteredMovies = movies.filter{
+            $0.title.lowercased().contains(filter.lowercased())
+        }
+        
+        updateData(on: filteredMovies)
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        isSearching = false
+        updateData(on: self.movies)
+    }
+}
