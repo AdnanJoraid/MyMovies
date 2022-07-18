@@ -32,10 +32,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func createFavoriteMoviesNC() -> UINavigationController {
-        let favoriteMoviesVC = FavoriteMoviesVC()
-        favoriteMoviesVC.title = "Favorites"
-        favoriteMoviesVC.tabBarItem = UITabBarItem(tabBarSystemItem: .favorites, tag: 1)
-        return UINavigationController(rootViewController: favoriteMoviesVC)
+        let moviesListVC = MoviesListVC()
+        moviesListVC.title = "Watch List"
+        moviesListVC.tabBarItem.image = UIImage(systemName: "list.bullet")
+        return UINavigationController(rootViewController: moviesListVC)
     }
     
     private func createTabBar() -> UITabBarController {
