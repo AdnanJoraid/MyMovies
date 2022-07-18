@@ -15,7 +15,9 @@ class MoviesVC: UIViewController {
     
     var movies: [Movie] = []
     var filteredMovies = [Movie]()
+    var movieCTA: MovieDetails? = nil
     var isSearching: Bool = false
+    var isLoading: Bool = false
     var collectionView: UICollectionView!
     var dataSource: UICollectionViewDiffableDataSource<Section, Movie>!
     
@@ -57,7 +59,6 @@ class MoviesVC: UIViewController {
         searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
         
-        
     }
     
     private func createTwoColumnFlowLayout() -> UICollectionViewFlowLayout {
@@ -94,15 +95,36 @@ class MoviesVC: UIViewController {
 //MARK: - Extensions
 
 extension MoviesVC: UICollectionViewDelegate {
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        isLoading = true
         let activeArray = isSearching ? filteredMovies : movies
         let movie = activeArray[indexPath.item]
         
-        let destVC = MovieDetailsVC()
-        destVC.title = movie.title
+        if isLoading {
+            getMovieDetailsById(for: movie.id)
+            self.isLoading = false
+        }
         
+        guard let movieCTA = self.movieCTA else { return }
+        
+        let destVC = MovieDetailsVC(movie: movieCTA)
+        destVC.title = movie.title
         let navController = UINavigationController(rootViewController: destVC)
         present(navController, animated: true)
+    }
+    
+    private func getMovieDetailsById(for movieId: String){
+        NetworkManager.shared.getMovieDetails(for: movieId) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let movie):
+                self.movieCTA = movie
+            case .failure(let error):
+                print(error)
+            }
+            
+        }
     }
 }
 
