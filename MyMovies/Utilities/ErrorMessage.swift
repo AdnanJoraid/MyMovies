@@ -13,4 +13,5 @@ enum MyMoviesErrorMessage: String, Error {
     case invalidData = "The data received from the server was invalid. Please try again"
     case unableToComplete = "Unable to complete your request. Please try again"
     case decodingError = "The data is not being processed. Please try again"
+    case aleadyInList = "This movie is already added to your list"
 }
