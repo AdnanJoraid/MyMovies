@@ -18,7 +18,7 @@ enum PersistenceManager {
         static let list = "list"
     }
     
-    static func updateWith(movie: MovieDetails, actionType: PersistenceActionType, completion: @escaping(MyMoviesErrorMessage?) -> Void) {
+    static func updateWith(movie: MovieDetails, actionType: PersistenceActionType, completion: @escaping (MyMoviesErrorMessage?) -> Void) {
         retrieveMovies { result in
             switch result {
                 
@@ -47,7 +47,7 @@ enum PersistenceManager {
     }
     
     static func retrieveMovies(completed: @escaping (Result<[MovieDetails], MyMoviesErrorMessage>) -> Void) {
-            //objects has to be decoded and encoded unlike strings, int etc
+
         
         guard let movieData = defaults.object(forKey: Keys.list) as? Data else {
                 completed(.success([]))
