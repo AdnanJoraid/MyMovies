@@ -38,10 +38,9 @@ class MovieDetailsVC: UIViewController {
     @objc func addButtonTapped() {
         PersistenceManager.updateWith(movie: movie, actionType: .add) { [weak self] error in
             guard let self = self else {return}
-            guard let error = error else {
-                print("error")
-                return
-            }
+            guard let error = error else { return }
+            self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
+                
         }
     }
     
