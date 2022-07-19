@@ -39,9 +39,8 @@ enum PersistenceManager {
                 
                 completion(saveFavorites(movies: retrievedMovies))
             case .failure(let error):
-                print(error.localizedDescription)
                 completion(error)
-                return
+
             }
         }
     }
