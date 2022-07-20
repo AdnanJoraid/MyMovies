@@ -40,8 +40,9 @@ class MovieDetailsVC: UIViewController {
             guard let self = self else {return}
             guard let error = error else { return }
             self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
-                
         }
+        
+        self.presentAlertOnMainThread(title: "Success!", message: "This movie has been added to your list", buttonTitle: "Ok")
     }
     
     

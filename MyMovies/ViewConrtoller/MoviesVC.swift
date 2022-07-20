@@ -46,7 +46,7 @@ class MoviesVC: UIViewController {
                 self.movies = movies.items
                 self.updateData(on: self.movies)
             case .failure(let error):
-                print(error)
+                self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
@@ -102,9 +102,11 @@ extension MoviesVC: UICollectionViewDelegate {
         let movie = activeArray[indexPath.item]
         
         if isLoading {
+            showLoadingView()
             getMovieDetailsById(for: movie.id)
             self.isLoading = false
         }
+        dismissLoadingView()
         
         guard let movieCTA = self.movieCTA else { return }
         
@@ -121,7 +123,7 @@ extension MoviesVC: UICollectionViewDelegate {
             case .success(let movie):
                 self.movieCTA = movie
             case .failure(let error):
-                print(error)
+                self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
             }
             
         }
