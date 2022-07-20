@@ -55,7 +55,7 @@ class MoviesListVC: UIViewController {
                 }
                 
             case .failure(let error):
-                print(error)
+                self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
             }
         }
     }
@@ -78,6 +78,17 @@ extension MoviesListVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let movieDetail = movieList[indexPath.row]
+        
+        let destVC = MovieDetailsVC(movie: movieDetail)
+        destVC.title = movieDetail.title
+        let navController = UINavigationController(rootViewController: destVC)
+        present(navController, animated: true)
+        
+    }
+    
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         let movie = movieList[indexPath.row]
@@ -88,7 +99,7 @@ extension MoviesListVC: UITableViewDelegate, UITableViewDataSource {
             guard let self = self else { return }
             guard let error = error else { return }
 
-            print("unable to remove")
+            self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
         })
     }
 }
