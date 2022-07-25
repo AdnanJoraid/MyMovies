@@ -76,19 +76,8 @@ extension MoviesListVC: UITableViewDelegate, UITableViewDataSource {
         cell.set(movie: movie)
         return cell
     }
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let movieDetail = movieList[indexPath.row]
+
         
-        let destVC = MovieDetailsVC(movie: movieDetail)
-        destVC.title = movieDetail.title
-        let navController = UINavigationController(rootViewController: destVC)
-        present(navController, animated: true)
-        
-    }
-    
-    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
         let movie = movieList[indexPath.row]
