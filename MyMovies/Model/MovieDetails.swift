@@ -15,6 +15,4 @@ struct MovieDetails: Codable {
     let releaseDate: String
     let runtimeStr: String
     let plot: String
-    let actorList: [Actor]
-    let similars: [Movie]
 }
