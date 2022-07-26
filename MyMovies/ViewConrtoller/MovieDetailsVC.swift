@@ -17,7 +17,6 @@ class MovieDetailsVC: UIViewController {
         view.backgroundColor = .black
         getMovieDetailsById(for: movie)
         configureViewController()
-        styleViews()
     }
     
     init(movie: String) {
@@ -35,6 +34,7 @@ class MovieDetailsVC: UIViewController {
                 guard let mo = self.movieDetial else { return }
                 DispatchQueue.main.async {
                     self.moviePoster.downloadImage(from: mo.image)
+                    self.styleViews()
                 }
             case .failure(let error):
                 self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
@@ -42,6 +42,8 @@ class MovieDetailsVC: UIViewController {
             
         }
         dismissLoadingView()
+ 
+
 
     }
     
@@ -74,15 +76,58 @@ class MovieDetailsVC: UIViewController {
     }
     
     func styleViews() {
-        
+        guard let movieDetial = movieDetial else {
+            print("shit")
+            return
+        }
+
         view.addSubview(moviePoster)
+
+        
+        let title = UILabel()
+        title.translatesAutoresizingMaskIntoConstraints = false
+        title.text = movieDetial.title
+        
+        let body = UILabel()
+        body.text = movieDetial.plot
+        body.translatesAutoresizingMaskIntoConstraints = false
+        body.textColor = .gray
+        body.font = UIFont.systemFont(ofSize: 13)
+        body.numberOfLines = 0
+        body.adjustsFontSizeToFitWidth = true
+        
+        let year = UILabel()
+        year.text = movieDetial.year
+        year.translatesAutoresizingMaskIntoConstraints = false
+        
+        let runtime = UILabel()
+        runtime.text = movieDetial.runtimeStr
+        runtime.translatesAutoresizingMaskIntoConstraints = false
         
         
+        view.addSubview(title)
+        view.addSubview(body)
+        view.addSubview(year)
+        view.addSubview(runtime)
         NSLayoutConstraint.activate([
             moviePoster.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             moviePoster.widthAnchor.constraint(equalToConstant: 160),
             moviePoster.heightAnchor.constraint(equalToConstant: 240),
-            moviePoster.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            moviePoster.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            title.topAnchor.constraint(equalTo: moviePoster.bottomAnchor, constant: 16),
+            title.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            year.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 8),
+            year.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            runtime.topAnchor.constraint(equalTo: year.bottomAnchor, constant: 8),
+            runtime.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            body.topAnchor.constraint(equalTo: runtime.bottomAnchor, constant: 8),
+            body.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
+            body.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+
         ])
     }
     
