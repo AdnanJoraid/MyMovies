@@ -100,34 +100,15 @@ extension MoviesVC: UICollectionViewDelegate {
         isLoading = true
         let activeArray = isSearching ? filteredMovies : movies
         let movie = activeArray[indexPath.item]
+
         
-        if isLoading {
-            showLoadingView()
-            getMovieDetailsById(for: movie.id)
-            self.isLoading = false
-        }
-        dismissLoadingView()
-        
-        guard let movieCTA = self.movieCTA else { return }
-        
-        let destVC = MovieDetailsVC(movie: movieCTA)
+        let destVC = MovieDetailsVC(movie: movie.id)
         destVC.title = movie.title
         let navController = UINavigationController(rootViewController: destVC)
         present(navController, animated: true)
     }
     
-    private func getMovieDetailsById(for movieId: String){
-        NetworkManager.shared.getMovieDetails(for: movieId) { [weak self] result in
-            guard let self = self else { return }
-            switch result {
-            case .success(let movie):
-                self.movieCTA = movie
-            case .failure(let error):
-                self.presentAlertOnMainThread(title: "Error", message: error.rawValue, buttonTitle: "Ok")
-            }
-            
-        }
-    }
+
 }
 
 extension MoviesVC: UISearchResultsUpdating, UISearchBarDelegate {
