@@ -1,5 +1,5 @@
 # MyMovies
-iOS application that utilizies UIKit, and the IMDB API for displaying popular list of movies. 
+iOS application that utilizes UIKit, and the IMDB API for displaying popular list of movies. The iOS application made in UIKit programatically 
 
 # Support 
 Application supports dark and light modes 
@@ -9,7 +9,6 @@ Application supports dark and light modes
   - CollectionView for displaying movies (2 movies in each row) 
   - Tableview for storing user's watch list 
   - Users can add a movie to their watch list and delete that movie later. 
-  
   
 # Screenshots and Demo 
 
