@@ -15,7 +15,6 @@ class MovieDetailsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .black
         getMovieDetailsById(for: movie)
         configureViewController()
     }
@@ -49,7 +48,7 @@ class MovieDetailsVC: UIViewController {
     }
     
     private func configureViewController() {
-        view.backgroundColor = .black
+        view.backgroundColor = .systemBackground
         let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(dismissVC))
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
         doneButton.tintColor = .red
