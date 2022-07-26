@@ -11,6 +11,7 @@ class MovieDetailsVC: UIViewController {
     let movie: String
     var movieDetial: MovieDetails?
     let moviePoster: MoviePosterImageView = MoviePosterImageView(frame: .zero)
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -81,9 +82,6 @@ class MovieDetailsVC: UIViewController {
             return
         }
 
-        view.addSubview(moviePoster)
-
-        
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.text = movieDetial.title
@@ -109,6 +107,8 @@ class MovieDetailsVC: UIViewController {
         view.addSubview(body)
         view.addSubview(year)
         view.addSubview(runtime)
+        view.addSubview(moviePoster)
+        
         NSLayoutConstraint.activate([
             moviePoster.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             moviePoster.widthAnchor.constraint(equalToConstant: 160),
@@ -127,7 +127,7 @@ class MovieDetailsVC: UIViewController {
             body.topAnchor.constraint(equalTo: runtime.bottomAnchor, constant: 8),
             body.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 12),
             body.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
-
+        
         ])
     }
     
